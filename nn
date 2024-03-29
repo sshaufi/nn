@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+
+nn_dir="$HOME/.config/nn/notes"
+
+EDITOR_OPT="-p"
+
+edit_note(){
+    [[ -z "$nn_dir/${1}.md" ]] && touch "$nn_dir/${1}.md"
+    $EDITOR $EDITOR_OPT "$nn_dir/${1}.md"
+}
+
+view_note(){
+    cat "$nn_dir/${1}.md" 2>/dev/null 
+    [[ "$?" != "0" ]] && edit_note $1
+}
+
+case "$1" in
+  'edit'|'ed'|'e')
+    edit_note $2
+  ;;
+  'view'|'v')
+   view_note $2
+   exit 1
+  ;;
+  'list'|'l'|'li')
+	  ls "$nn_dir"|awk -F '.' '{print $1}'
+  ;;
+   'clean'|'c')
+	   echo 'clean'
+  ;;
+  *)
+    edit_note "$1"
+    ;;
+esac
+
+## checkf for empty file and remove
