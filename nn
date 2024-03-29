@@ -24,13 +24,14 @@ case "$1" in
   ;;
   'list'|'l'|'li')
 	  ls "$nn_dir"|awk -F '.' '{print $1}'
+	  #TODO: make list more readable, use less?
   ;;
    'clean'|'c')
-	   echo 'clean'
+	   emp=$(find $nn_dir  -type f -name '*.md'  -empty)
+	   [ -z "$emp" ] && exit 0 || printf "Deleting...\n" && echo $emp | xargs rm -v
+	   #TODO: only list filename
   ;;
   *)
     edit_note "$1"
     ;;
 esac
-
-## checkf for empty file and remove
